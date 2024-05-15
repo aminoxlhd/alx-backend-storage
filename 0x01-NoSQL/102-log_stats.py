@@ -12,7 +12,8 @@ def log_stats(mongo_collection):
     for method in methods:
         count = mongo_collection.count_documents({"method": method})
         print(f"\tmethod {method}: {count}")
-    print(f"{mongo_collection.count_documents({'method': 'GET', 'path': '/status'})} status check")
+    print(f"{mongo_collection.count_documents
+            ({'method': 'GET', 'path': '/status'})} status check")
     print("IPs:")
     pipeline = [
             {"$group": {"_id": "$ip", "count": {"$sum": 1}}},
