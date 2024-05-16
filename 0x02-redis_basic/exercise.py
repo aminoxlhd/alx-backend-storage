@@ -46,11 +46,10 @@ def replay(method: Callable) -> None:
 
     print("{} was called {} times:".format(method.__qualname__, len(inputs)))
     for inp, out in zip(inputs, outputs):
-        print(
-                "{}(*{}) -> {}".format(
-                    method.__qualname__, inp.decode("utf-8"), out.decode("utf-8")
-                    )
-                )
+        print("{}(*{}) -> {}".format(
+            method.__qualname__, inp.decode("utf-8"), out.decode("utf-8")
+            )
+        )
 
 
 class Cache:
@@ -59,13 +58,11 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """ store function """
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
-
 
     def get(self, key: str, fn: Optional[Callable] = None) -> UnionOfTypes:
         """ get function """
@@ -74,11 +71,9 @@ class Cache:
             val = fn(val)
         return val
 
-
     def get_str(self, key: str) -> str:
         """ get_str function """
         return self.get(key, fn=str)
-
 
     def get_int(self, key: str) -> int:
         """ get_int function """
