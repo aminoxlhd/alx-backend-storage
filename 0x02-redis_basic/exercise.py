@@ -19,6 +19,22 @@ def count_calls(method: Callable) -> Callable:
 
     return wrapper
 
+
+def call_history(method: Callable) -> Callable:
+    """ call_history function """
+    inkey = method.__qualname__ + ":inputs"
+    outkey = method.__qualname__ + ":outputs"
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """ wrapper function """
+        self._redis.rpush(inkey, str(args))
+        res = method(self, *args, **kwargs)
+        self._redis.rpush(outkey, str(res))
+        return res
+
+    return wrapper
+
 class Cache:
     def __init__(self):
         """ init function """
