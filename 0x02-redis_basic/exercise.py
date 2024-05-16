@@ -66,9 +66,9 @@ class Cache:
 
     def get(self, key: str, fn: Optional[Callable] = None) -> UnionOfTypes:
         """ get function """
-        val = self._redis.get(key)
         if fn:
-            val = fn(val)
+            return fn(self._redis.get(key))
+        val = self._redis.get(key)
         return val
 
     def get_str(self, key: str) -> str:
